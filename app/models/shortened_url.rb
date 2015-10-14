@@ -21,6 +21,18 @@ class ShortenedUrl < ActiveRecord::Base
     code
   end
 
+  def num_clicks
+    self.visitors.select(:id).count
+  end
+
+  def num_uniques
+    self.visitors.select(:id).distinct.count
+  end
+
+  def num_recent_uniques
+    self.visitors.select(:id).distinct.where(timestamp < 10.minutes.ago).count
+  end
+
   belongs_to :submitter,
     :class_name => "User",
     :foreign_key => :user_id,
