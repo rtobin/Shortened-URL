@@ -11,27 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140212185208) do
+ActiveRecord::Schema.define(version: 20151014182617) do
 
-  create_table "courses", force: true do |t|
-    t.string   "name"
-    t.integer  "prereq_id"
-    t.integer  "instructor_id"
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "shortened_urls", force: true do |t|
+    t.string   "long_url"
+    t.string   "short_url"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "enrollments", force: true do |t|
-    t.integer  "course_id"
-    t.integer  "student_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "shortened_urls", ["long_url"], name: "index_shortened_urls_on_long_url", unique: true, using: :btree
+  add_index "shortened_urls", ["short_url"], name: "index_shortened_urls_on_short_url", unique: true, using: :btree
+  add_index "shortened_urls", ["user_id"], name: "index_shortened_urls_on_user_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
 end
