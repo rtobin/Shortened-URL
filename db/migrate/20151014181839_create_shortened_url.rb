@@ -1,4 +1,4 @@
-class ShortenedUrl < ActiveRecord::Migration
+class CreateShortenedUrl < ActiveRecord::Migration
   def change
       create_table :shortened_urls do |t|
           t.string :long_url
