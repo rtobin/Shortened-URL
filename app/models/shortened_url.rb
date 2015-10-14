@@ -26,4 +26,8 @@ class ShortenedUrl < ActiveRecord::Base
     :foreign_key => :user_id,
     :primary_key => :id
 
+  has_many :visitors,
+    :through => :visits
+    :source => :users
+
 end
