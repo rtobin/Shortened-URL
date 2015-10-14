@@ -10,17 +10,18 @@ puts "1. Visits Shortened URL"
 choice = nil
 choice = gets.chomp until choice == "0" || choice == "1"
 
-if choice == 0
+if choice == "0"
   puts "Type in your long url:"
   url = gets.chomp
   new_url = ShortenedUrl.random_code
-  ShortenedUrl.new(long_url: url, short_url: new_url, user_id: user.id)
+  ShortenedUrl.create!(long_url: url, short_url: new_url, user_id: user.id)
   puts "Short url is: #{new_url}"
 end
 
-if choice == 1
+if choice == "1"
   puts "Type in the shortened url:"
   lookup_url = gets.chomp
-  ShortenedUrl.find_by!(short_url: lookup_url)
-  VISIT THIS ^
+  go_here_url = ShortenedUrl.find_by!(short_url: lookup_url)
+  Visit.record_visit!(user, go_here_url)
+  Launchy.open( go_here_url.long_url )
 end
