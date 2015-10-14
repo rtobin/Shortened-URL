@@ -4,6 +4,12 @@ class ShortenedUrl < ActiveRecord::Base
   validates :short_url, :presence => true
   validates :user_id, :presence => true
 
+  def self.create_for_user_and_long_url!(user, long_url)
+    options = {long_url: long_url,
+               short_url: ShortenedUrl.random_code,
+               user_id: user.id}
+    ShortenedUrl.create!(options)
+  end
 
   def self.random_code
     code = nil
@@ -14,5 +20,10 @@ class ShortenedUrl < ActiveRecord::Base
 
     code
   end
+
+  belongs_to :submitter,
+    :class_name => "User",
+    :foreign_key => :user_id,
+    :primary_key => :id
 
 end
